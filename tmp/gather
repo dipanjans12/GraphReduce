@@ -1,0 +1,58 @@
+m_srcs
+m_srcOffsets
+m_edgeIndexCSC
+m_dsts
+m_dstOffsets
+m_edgeIndexCSR
+
+m_vertexData
+m_edgeData
+m_nVertices
+m_nEdges
+
+m_active
+m_nActive
+m_applyRet
+m_activeFlags
+
+GATHER
+
+Program -- given by user 1
+haveGather -- given by user 1 
+m_srcOffsets -done 1
+m_active ---should be per shard and also global 1
+m_nActive ---should be per shard and also global 1
+m_edgeCountScan ---temp in shard 
+sortEdgesForGather -- given by user 1
+m_srcs -done 1
+m_vertexData -done -global gpu 1
+m_edgeData -done 1
+m_edgeIndexCSC -done 1
+m_gatherDstsTmp ---temp in shard
+m_gatherMapTmp ---temp in shard
+m_nVertices -done 1
+m_gatherTmp ---temp in shard
+m_gatherTmpHost ---temp in shard
+
+APPLY
+
+Program -- given by user 1
+m_nActive ---should be per shard and also global 1
+m_active ---should be per shard and also global 1
+m_gatherTmp ---temp in shard
+m_vertexData -done -global gpu 1
+m_applyRet ---should be per shard and also global 1
+
+SCATTER
+
+haveScatter -- given by user 1
+m_dstOffsets -done 1
+m_active ---should be per shard and also global 1
+m_applyRet ---should be per shard and also global 1
+m_nActive ---should be per shard and also global 1
+m_deviceMappedValue ---temp in shard
+m_edgeCountScan ---temp in shard
+m_hostMappedValue ---temp in shard
+m_activeFlags ---should be per shard and also global 1
+m_nVertices -done 1
+m_dsts -done 1

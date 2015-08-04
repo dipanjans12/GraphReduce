@@ -1,0 +1,901 @@
+diff --git a/gpugas.h b/gpugas.h
+index 123e5d3..1938cc6 100644
+--- a/gpugas.h
++++ b/gpugas.h
+@@ -57,6 +57,7 @@ Implementation Notes(VV):
+ #include "gpugas_kernels.cuh"
+ #include <vector>
+ #include <iterator>
++#include <algorithm>
+ #include "moderngpu.cuh"
+ #include "primitives/scatter_if_mgpu.h"
+ #include "util.cuh"
+@@ -85,8 +86,10 @@ private:
+   Int         m_nEdges;
+ 
+   //input/output pointers to host data
+-  VertexData *m_vertexDataHost;
+-  EdgeData   *m_edgeDataHost;
++  //VertexData *m_vertexDataHost;
++  //EdgeData   *m_edgeDataHost;
++  bool m_vertexDataHost;
++  bool m_edgeDataHost;
+ 
+   //GPU copy
+   VertexData *m_vertexData;
+@@ -94,12 +97,12 @@ private:
+ 
+   //CSC representation for gather phase
+   //Kernel accessible data
+-  Int *m_srcs;
++  Int *m_srcs; //Not required since I will be creating the CSC representation in the parent class
+   Int *m_srcOffsets;
+   Int *m_edgeIndexCSC;
+ 
+   //CSR representation for reduce phase
+-  Int *m_dsts;
++  Int *m_dsts; //Not required since I will be creating the CSR representation in the parent class
+   Int *m_dstOffsets;
+   Int *m_edgeIndexCSR;
+ 
+@@ -119,14 +122,15 @@ private:
+   Int *m_deviceMappedValue;
+ 
+   //counter and list for small sized scatter / activation
+-  Int *m_edgeOutputCounter;
+-  Int *m_outputEdgeList;
++  //Int *m_edgeOutputCounter;
++  //Int *m_outputEdgeList;
+ 
+   //These go away once gatherMap/gatherReduce/apply are fused
+   GatherResult *m_gatherMapTmp;  //store results of gatherMap()
+   GatherResult *m_gatherTmp;     //store results of gatherReduce()
+   Int          *m_gatherDstsTmp; //keys for reduce_by_key in gatherReduce
+-  GatherResult *m_gatherTmpHost;     //copy back results of gatherReduce() to host memory
++//Don't need hosttmp because it is a O(V) array and we keep it in the GPU memory only i.e. its a global tmp
++//  GatherResult *m_gatherTmpHost;     //copy back results of gatherReduce() to host memory
+ 
+   //Preprocessed data for speeding up reduce_by_key when all vertices are active
+   std::auto_ptr<mgpu::ReduceByKeyPreprocessData> preprocessData;
+@@ -231,8 +235,10 @@ private:
+     GASEngineGPUShard()
+       : m_nVertices(0)
+       , m_nEdges(0)
+-      , m_vertexDataHost(0)
+-      , m_edgeDataHost(0)
++      //, m_vertexDataHost(0)
++      //, m_edgeDataHost(0)
++      , m_vertexDataHost(false)
++      , m_edgeDataHost(false)
+       , m_vertexData(0)
+       , m_edgeData(0)
+       , m_srcs(0)
+@@ -251,9 +257,9 @@ private:
+       , m_gatherMapTmp(0)
+       , m_gatherTmp(0)
+       , m_gatherDstsTmp(0)
+-      , m_gatherTmpHost(0)
+-      , m_edgeOutputCounter(0)
+-      , m_outputEdgeList(0)
++      //, m_gatherTmpHost(0)
++      //, m_edgeOutputCounter(0)
++      //, m_outputEdgeList(0)
+       , preComputed(false)
+     {
+       m_mgpuContext = mgpu::CreateCudaDevice(0);
+@@ -278,9 +284,9 @@ private:
+       gpuFree(m_gatherMapTmp);
+       gpuFree(m_gatherTmp);
+       gpuFree(m_gatherDstsTmp);
+-      cpuFree(m_gatherTmpHost);
+-      gpuFree(m_edgeOutputCounter);
+-      gpuFree(m_outputEdgeList);
++      //cpuFree(m_gatherTmpHost);
++      //gpuFree(m_edgeOutputCounter);
++      //gpuFree(m_outputEdgeList);
+       cudaFreeHost(m_hostMappedValue);
+       //don't we need to explicitly clean up m_mgpuContext?
+     }
+@@ -298,30 +304,36 @@ private:
+     //This function is not optimized and at the moment, this initialization
+     //is considered outside the scope of the core work on GAS.
+     //We will have to revisit this assumption at some point.
++    //NOTE: Changing this function such that only gpuAlloc is being done here. No data transfer is done in this function. This function is called only once by the parent class for each shard just to allocate GPU memory for each shard.
+     void setGraph(Int nVertices
+-      , VertexData* vertexData
++//      , VertexData* vertexData
++      , bool vertexDataHost
+       , Int nEdges
+-      , EdgeData* edgeData
+-      , const Int *edgeListSrcs
+-      , const Int *edgeListDsts)
++//      , EdgeData* edgeData
++      , bool edgeDataHost
++//      , const Int *edgeListSrcs
++//      , const Int *edgeListDsts
++    )      
+     {
+-      m_nVertices  = nVertices;
+-      m_nEdges     = nEdges;
+-      m_vertexDataHost = vertexData;
+-      m_edgeDataHost   = edgeData;
++      m_vertexDataHost = vertexDataHost;
++      m_edgeDataHost   = edgeDataHost;
+ 
++//No need to allocate for vertexData, it is global
++/*
+       //allocate copy of vertex and edge data on GPU
+       if( m_vertexDataHost )
+       {
+-        gpuAlloc(m_vertexData, m_nVertices);
+-        copyToGPU(m_vertexData, m_vertexDataHost, m_nVertices);
++        gpuAlloc(m_vertexData, nVertices);
++        //Disabling coptToGPU for now, will be done in another step
++        //copyToGPU(m_vertexData, m_vertexDataHost, m_nVertices);
+       }
++*/
+ 
+       //allocate CSR and CSC edges
+-      gpuAlloc(m_srcOffsets, m_nVertices + 1);
+-      gpuAlloc(m_dstOffsets, m_nVertices + 1);
+-      gpuAlloc(m_srcs, m_nEdges);
+-      gpuAlloc(m_dsts, m_nEdges);
++      gpuAlloc(m_srcOffsets, nVertices + 1);
++      gpuAlloc(m_dstOffsets, nVertices + 1);
++      gpuAlloc(m_srcs, nEdges);
++      gpuAlloc(m_dsts, nEdges);
+ 
+       //These edges are not needed when there is no edge data
+       //We only need one of these since we can sort the edgeData directly into
+@@ -331,10 +343,12 @@ private:
+         sortEdgesForGather is true by default
+       */
+       if( sortEdgesForGather )
+-        gpuAlloc(m_edgeIndexCSR, m_nEdges);
++        gpuAlloc(m_edgeIndexCSR, nEdges);
+       else
+-        gpuAlloc(m_edgeIndexCSC, m_nEdges);
++        gpuAlloc(m_edgeIndexCSC, nEdges);
+ 
++//This code created the CSR and CSC representations which we have done in the parent class.
++/*
+       //these are pretty big temporaries, but we're assuming 'unlimited'
+       //host memory for now.
+       std::vector<Int> tmpOffsets(m_nVertices + 1);
+@@ -375,47 +389,114 @@ private:
+ 
+       copyToGPU(m_dstOffsets, &tmpOffsets[0], m_nVertices + 1);
+       copyToGPU(m_dsts, &tmpVerts[0], m_nEdges);
++*/
+ 
+       if( m_edgeDataHost )
+       {
+-        gpuAlloc(m_edgeData, m_nEdges);
+-        copyToGPU(m_edgeData, &sortedEdgeData[0], m_nEdges);
++        gpuAlloc(m_edgeData, nEdges);
++        //Disabling coptToGPU for now, will be done in another step
++        //copyToGPU(m_edgeData, &sortedEdgeData[0], m_nEdges);
+       }
+ 
++//No need to allocate for vertexData, it is global
++/*
+       //allocate active lists
+-      gpuAlloc(m_active, m_nVertices);
+-      gpuAlloc(m_activeNext, m_nVertices);
++      gpuAlloc(m_active, nVertices);
++      gpuAlloc(m_activeNext, nVertices);
+ 
+       //allocate temporaries for current multi-part gather kernels
+-      gpuAlloc(m_applyRet, m_nVertices);
+-      gpuAlloc(m_activeFlags, m_nVertices);
+-      gpuAlloc(m_edgeCountScan, m_nVertices);
++      gpuAlloc(m_applyRet, nVertices);
++      gpuAlloc(m_activeFlags, nVertices);
++*/
++      gpuAlloc(m_edgeCountScan, nVertices);
+       //have to allocate extra for faked incoming edges when there are
+       //no incoming edges
+-      gpuAlloc(m_gatherMapTmp, m_nEdges + m_nVertices);
+-      gpuAlloc(m_gatherTmp, m_nVertices);
+-      gpuAlloc(m_gatherDstsTmp, m_nEdges + m_nVertices);
+-      cpuAlloc(m_gatherTmpHost, m_nVertices);
++      gpuAlloc(m_gatherMapTmp, nEdges + nVertices);
++      //gpuAlloc(m_gatherTmp, nVertices);
++      gpuAlloc(m_gatherDstsTmp, nEdges + nVertices);
++      //cpuAlloc(m_gatherTmpHost, nVertices);
+ 
+       //allocated mapped memory
+       cudaMallocHost(&m_hostMappedValue, sizeof(Int), cudaHostAllocMapped );
+       cudaHostGetDevicePointer(&m_deviceMappedValue, m_hostMappedValue, 0);
+ 
+       //allocate for small sized list
+-      gpuAlloc(m_edgeOutputCounter, 1);
++      /*gpuAlloc(m_edgeOutputCounter, 1);
+       if (m_nEdges < 50000) {
+         gpuAlloc(m_outputEdgeList, m_nEdges);
+       }
+       else {
+         gpuAlloc(m_outputEdgeList, m_nEdges / 100 + 1);
+-      }
++      }*/
+ 
+       cudaEventCreate(&m_ev0);
+       cudaEventCreate(&m_ev1);
+     }
+ 
++    //This function copies the data from CPU to GPU for the shard
++    void copyGraphIn(Int nVertices
++        , VertexData* vertexDataHost
++        , Int nEdges
++        , EdgeData* edgeDataHost
++        , const Int *srcsHost
++        , const Int *srcOffsetsHost
++        , const Int *edgeIndexCSCHost
++        , const Int *dstsHost
++        , const Int *dstOffsetsHost
++        , const Int *edgeIndexCSRHost
++        , Int nActive
++        , Int* activeHost
++        , Int* applyRetHost
++        , char* activeFlagsHost
++        , GatherResult *gatherTmpHost)
++    {
++      //Copying in the number of vertices and edges in this shard
++      m_nVertices  = nVertices;
++      m_nEdges     = nEdges;
++      m_nActive    = nActive;
+ 
+-    //This may be a slow function, so normally would only be called
++      //Copying the vertex and edge states in this shard 
++      //No need to copy vertexData, it is global, already in GPU, just copy the pointer at the appropriate offset
++      if( m_vertexDataHost )
++        m_vertexData = vertexDataHost;
++      //TODO: error is here  cuda error 11 (invalid argument)
++      if( m_edgeDataHost )
++        copyToGPU(m_edgeData, edgeDataHost, m_nEdges); 
++
++      //Copying the CSR and CSC representations of the edges
++      copyToGPU(m_srcs, srcsHost, m_nEdges);
++      copyToGPU(m_srcOffsets, srcOffsetsHost, m_nVertices);
++      copyToGPU(m_edgeIndexCSC, edgeIndexCSCHost, m_nEdges);
++      copyToGPU(m_dsts, dstsHost, m_nEdges);
++      copyToGPU(m_dstOffsets, dstOffsetsHost, m_nVertices);
++      copyToGPU(m_edgeIndexCSR, edgeIndexCSRHost, m_nEdges);
++
++      //Copying the active lists
++      //No need to copy, it is global, already in GPU, just copy the pointer at the appropriate offset
++      m_active = activeHost;
++      m_applyRet = applyRetHost;
++      m_activeFlags = activeFlagsHost;
++      //copyToGPU(m_active, activeHost, m_nVertices);
++      //copyToGPU(m_applyRet, applyRetHost, m_nVertices);
++      //copyToGPU(m_activeFlags, activeFlagsHost, m_nVertices);
++      
++      m_gatherTmp = gatherTmpHost;
++    }
++
++    //This function copies the data from GPU to CPU for the shard
++    void copyGraphOut(EdgeData* edgeDataHost)
++    {
++      //Copying the edge states in this shard
++      if( m_edgeDataHost )
++        copyToHost(edgeDataHost, m_edgeData, m_nEdges); 
++
++      //The vertex states and active lists are already in GPU memory, so no need to copy back
++      //We only need to copy them back to CPU at the end of the runtime
++    }
++
++//We don't need this function anymore in this class, we will move it to the parent class
++/*
++     //This may be a slow function, so normally would only be called
+     //at the end of a computation.  This does not invalidate the
+     //data already in the engine, but does make sure that the host
+     //data is consistent with the engine's internal data
+@@ -440,7 +521,7 @@ private:
+       dim3 grid = calcGridDim(nBlocks);
+       GPUGASKernels::kRange<<<grid, nThreadsPerBlock>>>(vertexStart, vertexEnd, m_active);
+     }
+-
++*/
+ 
+     //Return the number of active vertices in the next gather step
+     Int countActive()
+@@ -511,7 +592,7 @@ private:
+     };
+ 
+ 
+-    void gatherApply(bool haveGather=true)
++    void gather(bool haveGather=true)
+     {
+       if( haveGather )
+       {
+@@ -592,20 +673,23 @@ private:
+                           , *m_mgpuContext);
+         }
+         SYNC_CHECK();
+-        copyToHost(m_gatherTmpHost, m_gatherTmp, m_nVertices);
++//        copyToHost(m_gatherTmpHost, m_gatherTmp, m_nVertices);
+       }
++    }
+ 
+-      //Now run the apply kernel
+-      {
+-        copyToGPU(m_gatherTmp, m_gatherTmpHost, m_nVertices);
+-        const int nThreadsPerBlock = 128;
+-        const int nBlocks = divRoundUp(m_nActive, nThreadsPerBlock);
+-        dim3 grid = calcGridDim(nBlocks);
+-        GPUGASKernels::kApply<Program, Int><<<grid, nThreadsPerBlock>>>
+-          (m_nActive, m_active, m_gatherTmp, m_vertexData, m_applyRet);
+-        SYNC_CHECK();
+-      }
++    
++    //Now run the apply kernel
++    void apply()
++    {
++      //        copyToGPU(m_gatherTmp, m_gatherTmpHost, m_nVertices);
++      const int nThreadsPerBlock = 128;
++      const int nBlocks = divRoundUp(m_nActive, nThreadsPerBlock);
++      dim3 grid = calcGridDim(nBlocks);
++      GPUGASKernels::kApply<Program, Int><<<grid, nThreadsPerBlock>>>
++        (m_nActive, m_active, m_gatherTmp, m_vertexData, m_applyRet);
++      SYNC_CHECK();
+     }
++    
+ 
+ 
+     //helper types for scatterActivate that should be private if nvcc would allow it
+@@ -782,7 +866,8 @@ private:
+         m_nActive = 0;
+       }
+       //100 is an empirically chosen value that seems to give good performance
+-      else if (nActiveEdges > m_nEdges / 100) {
++      //else if (nActiveEdges > m_nEdges / 100) {
++      else {
+         //Gathers the dst vertex ids from m_dsts and writes a true for each
+         //dst vertex into m_activeFlags
+         CHECK( cudaMemset(m_activeFlags, 0, sizeof(char) * m_nVertices) );
+@@ -811,7 +896,7 @@ private:
+         SYNC_CHECK();
+         m_nActive = *m_hostMappedValue;
+       }
+-      else {
++      /*else {
+         //we have a small number of edges, so just output into a list
+         //with atomics, sort and then extract unique values
+         CHECK( cudaMemset(m_edgeOutputCounter, 0, sizeof(int) ) );
+@@ -842,17 +927,17 @@ private:
+         cudaDeviceSynchronize();
+         m_nActive = *m_hostMappedValue;
+         SYNC_CHECK();
+-      }
++      }*/
+     }
+ 
+ 
++/*
+     Int nextIter()
+     {
+       //nothing to be done here.
+       return m_nActive;
+     }
+ 
+-
+     //single entry point for the whole affair, like before.
+     //special cases that don't need gather or scatter can
+     //easily roll their own loop.
+@@ -865,6 +950,7 @@ private:
+         nextIter();
+       }
+     }
++*/
+ };
+ 
+ /*
+@@ -886,63 +972,485 @@ public:
+   typedef typename Program::GatherResult GatherResult;
+ 
+ private:
+-  GASEngineGPUShard<Program, Int, sortEdgesForGather> *shard;
+ 
+-public:
+-  GASEngineGPU()
++  //Defining the default number of CUDA streams i.e. the number of shards in the GPU memory
++  static const Int NUM_STREAMS = 2;
++  static const Int maxEdgesPerShard = 33554432;
++  Int maxVerticesPerShard;
++  Int numShards;
++  GASEngineGPUShard<Program, Int, sortEdgesForGather> *shard[NUM_STREAMS];
++  Int *vertexShardMap;
++  Int *edgeShardMap;
++  Int *shardMapTmp;
++  Int *activeShardMap;
++
++  Int         nVertices;
++  Int         nEdges;
++
++  //input/output pointers to host data
++  VertexData *vertexDataHost;
++  EdgeData   *edgeDataHost;
++  bool       vertexDataExist;
++  bool       edgeDataExist;
++
++  //GPU copy
++  VertexData *vertexData; //on GPU O(V)
++  EdgeData   *edgeData; //on CPU O(E)
++
++  //CSC representation for gather phase
++  //Kernel accessible data
++  Int *srcs; //O(E)
++  Int *srcOffsets; //O(V)
++  Int *edgeIndexCSC; //O(E)
++
++  //CSR representation for reduce phase
++  Int *dsts; //O(E)
++  Int *dstOffsets; //O(V)
++  Int *edgeIndexCSR; //O(E)
++
++  //Temporary variable needed to sum both in and out edges for the vertices to determine shards
++  Int *edgesPerVertexTmp;
++
++  //Global active vertex lists
++  Int *active; //O(V)
++  Int  nActive;
++  Int *applyRet; //O(V) //set of vertices whose neighborhood will be active next
++  char *activeFlags; //O(V)
++  
++  GatherResult *gatherTmp;     //store results of gatherReduce()
++
++  //convenience
++  void errorCheck(cudaError_t err, const char* file, int line)
+   {
+-    shard = new GASEngineGPUShard<Program, Int, sortEdgesForGather>();
++    if( err != cudaSuccess )
++    {
++      printf("%s(%d): cuda error %d (%s)\n", file, line, err, cudaGetErrorString(err));
++      abort();
++    }
+   }
+ 
+-  ~GASEngineGPU()
++  //use only for debugging kernels
++  //this slows stuff down a LOT
++  void syncAndErrorCheck(const char* file, int line)
+   {
+-    free(shard);
++    cudaThreadSynchronize();
++    errorCheck(cudaGetLastError(), file, line);
+   }
+ 
+-  void setGraph(Int nVertices
+-      , VertexData* vertexData
+-      , Int nEdges
+-      , EdgeData* edgeData
+-      , const Int *edgeListSrcs
+-      , const Int *edgeListDsts)
++  public:
++    GASEngineGPU()
++      : nVertices(0)
++      , nEdges(0)
++      , vertexDataHost(0)
++      , edgeDataHost(0)
++      , vertexDataExist(true)
++      , edgeDataExist(true)
++      , vertexData(0)
++      , edgeData(0)
++      , srcs(0)
++      , srcOffsets(0)
++      , edgeIndexCSC(0)
++      , dsts(0)
++      , dstOffsets(0)
++      , edgeIndexCSR(0)
++      , active(0)
++      , nActive(0)
++      , applyRet(0)
++      , activeFlags(0)
++      , edgesPerVertexTmp(0)
++      , numShards(0)
++      , vertexShardMap(0)
++      , edgeShardMap(0)
++      , shardMapTmp(0)
++      , activeShardMap(0)
++      , maxVerticesPerShard(0)
++      , gatherTmp(0)
++    {
++      for( size_t i = 0; i < NUM_STREAMS; ++i)
++        shard[i] = new GASEngineGPUShard<Program, Int, sortEdgesForGather>();
++    }
++
++    ~GASEngineGPU()
++    {
++      gpuFree(vertexData);
++      cpuFree(edgeData);
++      cpuFree(srcs);
++      cpuFree(srcOffsets);
++      cpuFree(edgeIndexCSC);
++      cpuFree(dsts);
++      cpuFree(dstOffsets);
++      cpuFree(edgeIndexCSR);
++      gpuFree(active);
++      gpuFree(applyRet);
++      gpuFree(activeFlags);
++      cpuFree(shard);
++      cpuFree(edgesPerVertexTmp);
++      cpuFree(vertexShardMap);
++      cpuFree(edgeShardMap);
++      cpuFree(shardMapTmp);
++      cpuFree(activeShardMap);
++      gpuFree(gatherTmp);
++    }
++
++  //this is undefined at the end of this template definition
++  #define CHECK(X) errorCheck(X, __FILE__, __LINE__)
++  #define SYNC_CHECK() syncAndErrorCheck(__FILE__, __LINE__)
++
++  template<typename T>
++  void gpuAlloc(T* &p, Int n)
++  {
++    CHECK( cudaMalloc(&p, sizeof(T) * n) );
++  }
++
++  template<typename T>
++  void cpuAlloc(T* &p, Int n)
++  {
++    p = (T *) malloc(sizeof(T) * n);
++  }
++
++  void gpuFree(void *ptr)
++  {
++    if( ptr )
++      CHECK( cudaFree(ptr) );
++  }
++
++  void cpuFree(void *ptr)
++  {
++    if( ptr )
++      free(ptr);
++  }
++
++  dim3 calcGridDim(Int n)
++  {
++    if (n < 65536)
++      return dim3(n, 1, 1);
++    else {
++      int side1 = static_cast<int>(sqrt((double)n));
++      int side2 = static_cast<int>(ceil((double)n / side1));
++      return dim3(side2, side1, 1);
++    }
++  }
++
++  Int divRoundUp(Int x, Int y)
++  {
++    return (x + y - 1) / y;
++  }
++
++  template<typename T>
++  void copyToGPU(T* dst, const T* src, Int n)
++  {
++    CHECK( cudaMemcpy(dst, src, sizeof(T) * n, cudaMemcpyHostToDevice) );
++  }
++
++  template<typename T>
++  void copyToHost(T* dst, const T* src, Int n)
++  {
++    //error check please!
++    CHECK( cudaMemcpy(dst, src, sizeof(T) * n, cudaMemcpyDeviceToHost) );
++  }
++
++  void setGraph(Int u_nVertices //number of vertices
++      , VertexData* u_vertexData //vertex states
++      , Int u_nEdges //number of edges
++      , EdgeData* u_edgeData //edge states
++      , const Int *edgeListSrcs //list of src vertices
++      , const Int *edgeListDsts) //list of dst vertices
+     {
+-      shard->setGraph(nVertices, vertexData, nEdges, edgeData, edgeListSrcs, edgeListDsts);
++      nVertices  = u_nVertices;
++      nEdges     = u_nEdges;
++      vertexDataHost = u_vertexData;
++      edgeDataHost   = u_edgeData;
++
++      //allocate copy of vertex data on GPU
++      if( vertexDataHost )
++      {
++        gpuAlloc(vertexData, nVertices);
++        copyToGPU(vertexData, vertexDataHost, nVertices);
++        vertexDataExist = true;
++      }
++
++      //allocate CSR and CSC edges
++      cpuAlloc(srcOffsets, nVertices + 1);
++      cpuAlloc(dstOffsets, nVertices + 1);
++      cpuAlloc(srcs, nEdges);
++      cpuAlloc(dsts, nEdges);
++      cpuAlloc(edgesPerVertexTmp, nVertices + 1);
++
++      //These edges are not needed when there is no edge data
++      //We only need one of these since we can sort the edgeData directly into
++      //either CSR or CSC.  But the memory and performance overhead of these
++      //arrays needs to be discussed.
++      if( sortEdgesForGather )
++        cpuAlloc(edgeIndexCSR, nEdges);
++      else
++        cpuAlloc(edgeIndexCSC, nEdges);
++
++      if( edgeDataHost )
++      {
++        cpuAlloc(edgeData, nEdges);
++        //copyToGPU(edgeData, &sortedEdgeData[0], nEdges);
++        edgeDataExist = true;
++      }
++
++      //get CSC representation for gather/apply
++      edgeListToCSC(nVertices, nEdges
++        , edgeListSrcs, edgeListDsts
++        , &srcOffsets[0], &srcs[0], &edgeIndexCSC[0]);
++
++      //sort edge data into CSC order to avoid an indirected read in gather
++      if( sortEdgesForGather )
++      {
++        for(size_t i = 0; i < nEdges; ++i)
++          edgeData[i] = edgeDataHost[ edgeIndexCSC[i] ];
++      }
++
++      //get CSR representation for activate/scatter
++      edgeListToCSR(nVertices, nEdges
++        , edgeListSrcs, edgeListDsts
++        , &dstOffsets[0], &dsts[0], &edgeIndexCSR[0]);
++
++      //sort edge data into CSR order to avoid an indirected write in scatter
++      if( !sortEdgesForGather )
++      {
++        for(size_t i = 0; i < nEdges; ++i)
++          edgeData[i] = edgeDataHost[ edgeIndexCSR[i] ];
++      }
++
++      //allocate active lists
++      gpuAlloc(active, nVertices);
++      //allocate temporaries for current multi-part gather kernels
++      gpuAlloc(applyRet, nVertices);
++      gpuAlloc(activeFlags, nVertices);
++     
++      //Printing GPU device properties
++      runTest();
++      //Summing the in and out edges of the vertices for constructing shards
++      for(size_t i = 0; i < nVertices + 1; ++i)
++        edgesPerVertexTmp[i] = srcOffsets[i] + dstOffsets[i];
++      
++      size_t i = 0;
++      Int *posTmp, pos;
++      Int maxEdgesPerShardTmp = maxEdgesPerShard;
++      cpuAlloc(shardMapTmp, nVertices);
++
++      do
++      {
++        //Library function to perform binary search greater than equal over the array
++        posTmp = std::upper_bound(edgesPerVertexTmp, edgesPerVertexTmp + nVertices + 1, maxEdgesPerShardTmp);
++        pos = posTmp - edgesPerVertexTmp;
++        
++        //Vertices between i and pos belong to numShard
++        for(; i < pos; ++i)
++          shardMapTmp[i] = numShards;
++
++        numShards++;
++        //If edges still left, then next shard can contain upto maxEdgesPerShard number of edges
++        maxEdgesPerShardTmp += maxEdgesPerShard;
++      }while(posTmp != edgesPerVertexTmp + nVertices + 1);
++
++      cpuAlloc(vertexShardMap, numShards + 1);
++      cpuAlloc(edgeShardMap, numShards + 1);
++      cpuAlloc(activeShardMap, numShards);
++      std::memset(vertexShardMap, 0, sizeof(vertexShardMap));
++      std::memset(edgeShardMap, 0, sizeof(edgeShardMap));
++      for(size_t i = 0; i < nVertices; ++i)
++      {
++        vertexShardMap[shardMapTmp[i] + 1]++;
++        edgeShardMap[shardMapTmp[i] + 1] += edgesPerVertexTmp[i + 1];
++      }
++
++      //Performing scan operation
++      for(size_t i = 1; i < numShards + 1; ++i)
++      {
++        maxVerticesPerShard = (maxVerticesPerShard > vertexShardMap[i]) ? maxVerticesPerShard : vertexShardMap[i];
++        vertexShardMap[i] += vertexShardMap[i-1];
++        edgeShardMap[i] += edgeShardMap[i-1];
++      }
++
++      /*
++       * Now we know which vertice belongs to which shard
++       * We just have to make NUM_STREAMS number of shards, allocate GPU memory and 
++       * repeatedly perform memcpy and run the GAS functions
++       */
++      //Allocating memory for each shard
++      for( size_t i = 0; i < NUM_STREAMS; ++i)
++        shard[i]->setGraph(maxVerticesPerShard, vertexDataExist, maxEdgesPerShard, edgeDataExist);
++
++      gpuAlloc(gatherTmp, nVertices);
+     }
+ 
++  void runTest()
++  {
++    int deviceCount;
++    CHECK( cudaGetDeviceCount(&deviceCount) );
++    if (deviceCount == 0) {
++      fprintf(stderr, "error: no devices supporting CUDA.\n");
++      exit(EXIT_FAILURE);
++    }
++
++    cudaDeviceProp prop;
++    int dev = 0;
++    CHECK( cudaGetDeviceProperties(&prop, dev) );
++    printf("Using device %d:\n", dev);
++    printf("%s; global mem: %dB; compute v%d.%d; clock: %d kHz\n",
++        prop.name, (int)prop.totalGlobalMem, (int)prop.major, 
++        (int)prop.minor, (int)prop.clockRate);
++  }
++
++    //set the active flag for a range [vertexStart, vertexEnd)
+     void setActive(Int vertexStart, Int vertexEnd)
+     {
+-      shard->setActive(vertexStart, vertexEnd);
++      nActive = vertexEnd - vertexStart;
++      const int nThreadsPerBlock = 128;
++      const int nBlocks = divRoundUp(nActive, nThreadsPerBlock);
++      dim3 grid = calcGridDim(nBlocks);
++      GPUGASKernels::kRange<<<grid, nThreadsPerBlock>>>(vertexStart, vertexEnd, active);
+     }
+ 
+     Int countActive()
+     {
+-      return shard->countActive();
++      return nActive;
+     }
+ 
+-    void gatherApply(bool haveGather=true)
++    void gather(bool haveGather=true)
+     {
+-      shard->gatherApply(haveGather);
++      for(size_t i = 0; i < numShards; ++i)
++      {
++        shard[i]->copyGraphIn(
++              vertexShardMap[i+1] - vertexShardMap[i]
++            , vertexData + vertexShardMap[i]
++            , edgeShardMap[i+1] - edgeShardMap[i]
++            , edgeData + edgeShardMap[i]
++            , srcs + edgeShardMap[i]
++            , srcOffsets + vertexShardMap[i]
++            , edgeIndexCSC + edgeShardMap[i]
++            , dsts + edgeShardMap[i]
++            , dstOffsets + vertexShardMap[i]
++            , edgeIndexCSR + edgeShardMap[i]
++            , activeShardMap[i] 
++            , active + vertexShardMap[i] 
++            , applyRet + vertexShardMap[i] 
++            , activeFlags + vertexShardMap[i]
++            , gatherTmp + vertexShardMap[i]
++            );
++
++        shard[i]->gather(haveGather);
++        
++        shard[i]->copyGraphOut(edgeData + edgeShardMap[i]);
++      }
++    }
++
++    void apply()
++    {
++      for(size_t i = 0; i < numShards; ++i)
++      {
++        shard[i]->copyGraphIn(
++              vertexShardMap[i+1] - vertexShardMap[i]
++            , vertexData + vertexShardMap[i]
++            , edgeShardMap[i+1] - edgeShardMap[i]
++            , edgeData + edgeShardMap[i]
++            , srcs + edgeShardMap[i]
++            , srcOffsets + vertexShardMap[i]
++            , edgeIndexCSC + edgeShardMap[i]
++            , dsts + edgeShardMap[i]
++            , dstOffsets + vertexShardMap[i]
++            , edgeIndexCSR + edgeShardMap[i]
++            , activeShardMap[i] 
++            , active + vertexShardMap[i] 
++            , applyRet + vertexShardMap[i] 
++            , activeFlags + vertexShardMap[i] 
++            , gatherTmp + vertexShardMap[i]
++            );
++
++        shard[i]->apply();
++        
++        shard[i]->copyGraphOut(edgeData + edgeShardMap[i]);
++      }
+     }
+ 
+     void scatterActivate(bool haveScatter=true)
+     {
+-      shard->scatterActivate(haveScatter);
++      for(size_t i = 0; i < numShards; ++i)
++      {
++        shard[i]->copyGraphIn(
++              vertexShardMap[i+1] - vertexShardMap[i]
++            , vertexData + vertexShardMap[i]
++            , edgeShardMap[i+1] - edgeShardMap[i]
++            , edgeData + edgeShardMap[i]
++            , srcs + edgeShardMap[i]
++            , srcOffsets + vertexShardMap[i]
++            , edgeIndexCSC + edgeShardMap[i]
++            , dsts + edgeShardMap[i]
++            , dstOffsets + vertexShardMap[i]
++            , edgeIndexCSR + edgeShardMap[i]
++            , activeShardMap[i] 
++            , active + vertexShardMap[i] 
++            , applyRet + vertexShardMap[i] 
++            , activeFlags + vertexShardMap[i] 
++            , gatherTmp + vertexShardMap[i]
++            );
++
++        shard[i]->scatterActivate(haveScatter);
++
++        activeShardMap[i] = shard[i]->countActive();
++        
++        shard[i]->copyGraphOut(edgeData + edgeShardMap[i]);
++      }
+     }
+ 
+     Int nextIter()
+     {
+-      return shard->nextIter();
++      Int nActiveNext = 0;
++      for(size_t i = 0; i < numShards; ++i)
++      {
++        nActiveNext += activeShardMap[i];
++      }
++      nActive = nActiveNext;
++      return nActive;
+     }
+ 
++    //This may be a slow function, so normally would only be called
++    //at the end of a computation.  This does not invalidate the
++    //data already in the engine, but does make sure that the host
++    //data is consistent with the engine's internal data
+     void getResults()
+     {
+-      shard->getResults();
++      if( vertexDataExist )
++        copyToHost(vertexDataHost, vertexData, nVertices);
++
++      //We have already copied the edgeData back using copyGraphOut() function called after every epoch
++      if( edgeDataExist )
++      {
++        //unsort the edge data - todo
++        //My attemt to unsort the edge data
++        if( sortEdgesForGather )
++        {
++          for(size_t i = 0; i < nEdges; ++i)
++            edgeDataHost[ edgeIndexCSC[i] ] = edgeData[i];
++        }
++
++        if( !sortEdgesForGather )
++        {
++          for(size_t i = 0; i < nEdges; ++i)
++            edgeDataHost[ edgeIndexCSR[i] ] = edgeData[i];
++        }
++      }
+     }
+-    
++
++    //single entry point for the whole affair, like before.
++    //special cases that don't need gather or scatter can
++    //easily roll their own loop.
+     void run()
+     {
+-      shard->run();
++      while( countActive() )
++      {
++        gather();
++        apply();
++        scatterActivate();
++        nextIter();
++      }
+     }
++
+ };
+ 
+ 

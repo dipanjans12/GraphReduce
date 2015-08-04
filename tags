@@ -1,0 +1,459 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ALGORITHMS	PowerGraphReferenceImplementations/Makefile	/^ALGORITHMS = pagerank sssp sssp_gather bfs connected_component$/;"	m
+ALGORITHMS	regressions/Makefile	/^ALGORITHMS = pagerank sssp bfs connected_component$/;"	m
+ActivateGatherIterator	gpugas.h	/^      ActivateGatherIterator(Int* offsets, Int* active)$/;"	f	struct:GASEngineGPUShard::ActivateGatherIterator
+ActivateGatherIterator	gpugas.h	/^    struct ActivateGatherIterator : public std::iterator<std::input_iterator_tag, Int>$/;"	s	class:GASEngineGPUShard
+ActivateOutputIterator	gpugas.h	/^      ActivateOutputIterator(char* flags) : m_flags(flags) {}$/;"	f	struct:GASEngineGPUShard::ActivateOutputIterator
+ActivateOutputIterator	gpugas.h	/^    struct ActivateOutputIterator$/;"	s	class:GASEngineGPUShard
+ActivateOutputIteratorSmallSize	gpugas.h	/^      ActivateOutputIteratorSmallSize(int* count, Int *list) : m_count(count), m_list(list) {}$/;"	f	struct:GASEngineGPUShard::ActivateOutputIteratorSmallSize
+ActivateOutputIteratorSmallSize	gpugas.h	/^    struct ActivateOutputIteratorSmallSize$/;"	s	class:GASEngineGPUShard
+BINARIES	Makefile	/^BINARIES = pagerank #sssp bfs connected_component #createCCGraph mtx2gr gr2mtx$/;"	m
+BINARIES	PowerGraphReferenceImplementations/Makefile	/^BINARIES = $(foreach x,$(ALGORITHMS),$x.x)$/;"	m
+CHECK	gpugas.h	1344;"	d
+CHECK	gpugas.h	176;"	d
+CHK_FREAD	graphio.cpp	278;"	d	file:
+CHK_FREAD	graphio.cpp	361;"	d	file:
+DEBUG	gpugas.h	19;"	d
+DIRECTED_SSSP	PowerGraphReferenceImplementations/sssp.cpp	/^bool DIRECTED_SSSP = true;$/;"	v
+EdgeCountIterator	gpugas.h	/^      EdgeCountIterator(Int *offsets, Int *active) : m_offsets(offsets), m_active(active) {};$/;"	f	struct:GASEngineGPUShard::EdgeCountIterator
+EdgeCountIterator	gpugas.h	/^    struct EdgeCountIterator : public std::iterator<std::input_iterator_tag, Int>$/;"	s	class:GASEngineGPUShard
+EdgeData	gpugas.h	/^  typedef typename Program::EdgeData     EdgeData;$/;"	t	class:GASEngineGPU
+EdgeData	gpugas.h	/^  typedef typename Program::EdgeData     EdgeData;$/;"	t	class:GASEngineGPUShard
+EdgeData	refgas.h	/^  typedef typename Program::EdgeData     EdgeData;$/;"	t	class:GASEngineRef
+GASEngineGPU	gpugas.h	/^    GASEngineGPU()$/;"	f	class:GASEngineGPU
+GASEngineGPU	gpugas.h	/^class GASEngineGPU$/;"	c
+GASEngineGPUShard	gpugas.h	/^    GASEngineGPUShard()$/;"	f	class:GASEngineGPUShard
+GASEngineGPUShard	gpugas.h	/^class GASEngineGPUShard$/;"	c
+GASEngineRef	refgas.h	/^    GASEngineRef()$/;"	f	class:GASEngineRef
+GASEngineRef	refgas.h	/^class GASEngineRef$/;"	c
+GOLD_BINARIES	regressions/Makefile	/^GOLD_BINARIES = $(foreach x,$(ALGORITHMS),..\/PowerGraphReferenceImplementations\/$x.x)$/;"	m
+GOLD_FILES	regressions/Makefile	/^GOLD_FILES = $(foreach P,$(ALGORITHMS),$(foreach G,$(GRAPHS),$G.$P.gold))$/;"	m
+GPUGAS_H__	gpugas.h	26;"	d
+GRAPHIO_H__	graphio.h	28;"	d
+GRAPHLAB_DIR	PowerGraphReferenceImplementations/Makefile	/^GRAPHLAB_DIR = \/home\/erich\/graphlabapi$/;"	m
+GRAPHS	regressions/Makefile	/^GRAPHS = ak2010 belgium_osm delaunay_n13 coAuthorsDBLP delaunay_n21 webbase-1M soc-LiveJournal1 #kron_g500-logn21$/;"	m
+GRAPH_DIR	regressions/Makefile	/^GRAPH_DIR = ..\/test-graphs$/;"	m
+GRAPH_FILE	test-graphs/common.mk	/^GRAPH_FILE := $(notdir $(GRAPH_URL))$/;"	m
+GRAPH_NAME	test-graphs/ak2010/Makefile	/^GRAPH_NAME = ak2010$/;"	m
+GRAPH_NAME	test-graphs/belgium_osm/Makefile	/^GRAPH_NAME = belgium_osm$/;"	m
+GRAPH_NAME	test-graphs/coAuthorsDBLP/Makefile	/^GRAPH_NAME = coAuthorsDBLP$/;"	m
+GRAPH_NAME	test-graphs/delaunay_n13/Makefile	/^GRAPH_NAME = delaunay_n13$/;"	m
+GRAPH_NAME	test-graphs/delaunay_n21/Makefile	/^GRAPH_NAME = delaunay_n21$/;"	m
+GRAPH_NAME	test-graphs/kron_g500-logn21/Makefile	/^GRAPH_NAME = kron_g500-logn21$/;"	m
+GRAPH_NAME	test-graphs/soc-LiveJournal1/Makefile	/^GRAPH_NAME = soc-LiveJournal1$/;"	m
+GRAPH_NAME	test-graphs/webbase-1M/Makefile	/^GRAPH_NAME = webbase-1M$/;"	m
+GRAPH_TAR	test-graphs/ufl.mk	/^GRAPH_TAR  = $(GRAPH_NAME).tar.gz$/;"	m
+GRAPH_URL	test-graphs/ak2010/Makefile	/^GRAPH_URL  = http:\/\/www.cise.ufl.edu\/research\/sparse\/MM\/DIMACS10\/ak2010.tar.gz$/;"	m
+GRAPH_URL	test-graphs/belgium_osm/Makefile	/^GRAPH_URL  = http:\/\/www.cise.ufl.edu\/research\/sparse\/MM\/DIMACS10\/belgium_osm.tar.gz$/;"	m
+GRAPH_URL	test-graphs/coAuthorsDBLP/Makefile	/^GRAPH_URL = http:\/\/www.cise.ufl.edu\/research\/sparse\/MM\/DIMACS10\/coAuthorsDBLP.tar.gz$/;"	m
+GRAPH_URL	test-graphs/delaunay_n13/Makefile	/^GRAPH_URL = http:\/\/www.cise.ufl.edu\/research\/sparse\/MM\/DIMACS10\/delaunay_n13.tar.gz$/;"	m
+GRAPH_URL	test-graphs/delaunay_n21/Makefile	/^GRAPH_URL = http:\/\/www.cise.ufl.edu\/research\/sparse\/MM\/DIMACS10\/delaunay_n21.tar.gz$/;"	m
+GRAPH_URL	test-graphs/kron_g500-logn21/Makefile	/^GRAPH_URL = http:\/\/www.cise.ufl.edu\/research\/sparse\/MM\/DIMACS10\/kron_g500-logn21.tar.gz$/;"	m
+GRAPH_URL	test-graphs/soc-LiveJournal1/Makefile	/^GRAPH_URL = http:\/\/www.cise.ufl.edu\/research\/sparse\/MM\/SNAP\/soc-LiveJournal1.tar.gz$/;"	m
+GRAPH_URL	test-graphs/webbase-1M/Makefile	/^GRAPH_URL = http:\/\/www.cise.ufl.edu\/research\/sparse\/MM\/Williams\/webbase-1M.tar.gz$/;"	m
+GZIP	test-graphs/common.mk	/^GZIP := gzip$/;"	m
+GatherResult	gpugas.h	/^  typedef typename Program::GatherResult GatherResult;$/;"	t	class:GASEngineGPU
+GatherResult	gpugas.h	/^  typedef typename Program::GatherResult GatherResult;$/;"	t	class:GASEngineGPUShard
+GatherResult	refgas.h	/^  typedef typename Program::GatherResult GatherResult;$/;"	t	class:GASEngineRef
+HEADERS	Makefile	/^HEADERS = graphio.h util.cuh refgas.h gpugas.h gpugas_kernels.cuh$/;"	m
+ITERATIONS	PowerGraphReferenceImplementations/pagerank.cpp	/^size_t ITERATIONS = 0;$/;"	v
+LD_LIBS	Makefile	/^LD_LIBS = -lz -lmgpu$/;"	m
+ListOutputIterator	gpugas.h	/^      ListOutputIterator(int *inputlist, int *outputlist) : m_inputlist(inputlist), m_outputlist(outputlist), m_offset(0) {}$/;"	f	struct:GASEngineGPUShard::ListOutputIterator
+ListOutputIterator	gpugas.h	/^      ListOutputIterator(int *inputlist, int *outputlist, int offset) : m_inputlist(inputlist), m_outputlist(outputlist), m_offset(offset) {}$/;"	f	struct:GASEngineGPUShard::ListOutputIterator
+ListOutputIterator	gpugas.h	/^    struct ListOutputIterator : public std::iterator<std::output_iterator_tag, Int>$/;"	s	class:GASEngineGPUShard
+ListToHeadFlagsIterator	gpugas.h	/^      ListToHeadFlagsIterator(int *list) : m_list(list), m_offset(0) {}$/;"	f	struct:GASEngineGPUShard::ListToHeadFlagsIterator
+ListToHeadFlagsIterator	gpugas.h	/^      ListToHeadFlagsIterator(int *list, int offset) : m_list(list), m_offset(offset) {}$/;"	f	struct:GASEngineGPUShard::ListToHeadFlagsIterator
+ListToHeadFlagsIterator	gpugas.h	/^    struct ListToHeadFlagsIterator : public std::iterator<std::input_iterator_tag, Int>$/;"	s	class:GASEngineGPUShard
+MAKEGOLD	regressions/Makefile	/^define MAKEGOLD$/;"	m
+MATRIX2SNAP	test-graphs/common.mk	/^MATRIX2SNAP := ..\/matrix2snap.py$/;"	m
+MGPU_PATH	Makefile	/^MGPU_PATH = ..\/moderngpu$/;"	m
+NUM_STREAMS	gpugas.h	/^  static const Int NUM_STREAMS = 2;$/;"	m	class:GASEngineGPU
+NVCC	Makefile	/^NVCC = nvcc$/;"	m
+NVCC_ARCHS	Makefile	/^NVCC_ARCHS = -gencode arch=compute_20,code=sm_20 -gencode arch=compute_30,code=sm_30 -gencode arch=compute_35,code=sm_35$/;"	m
+NVCC_OPTS	Makefile	/^NVCC_OPTS = -O3 -I$(MGPU_PATH)\/include -L$(MGPU_PATH)$/;"	m
+PG_REF_DIR	regressions/Makefile	/^PG_REF_DIR = ..\/PowerGraphReferenceImplementations$/;"	m
+POWERGRAPH_OPTS	regressions/Makefile	/^POWERGRAPH_OPTS = --ncpus 4$/;"	m
+PredicatedEdgeCountIterator	gpugas.h	/^      PredicatedEdgeCountIterator(Int *offsets, Int *active, Int * predicates) : m_offsets(offsets), m_active(active), m_predicates(predicates) {};$/;"	f	struct:GASEngineGPUShard::PredicatedEdgeCountIterator
+PredicatedEdgeCountIterator	gpugas.h	/^    struct PredicatedEdgeCountIterator : public std::iterator<std::input_iterator_tag, Int>$/;"	s	class:GASEngineGPUShard
+REFGAS_H__	refgas.h	18;"	d
+REGRESSIONS	regressions/Makefile	/^REGRESSIONS = $(foreach P,$(ALGORITHMS),$(foreach G,$(GRAPHS),$G.$P.pass))$/;"	m
+RESET_PROB	PowerGraphReferenceImplementations/pagerank.cpp	/^float RESET_PROB = 0.15;$/;"	v
+SCATTER_IF_H__	primitives/scatter_if_mgpu.h	18;"	d
+SUBDIRS	test-graphs/Makefile	/^SUBDIRS = ak2010 belgium_osm delaunay_n13 delaunay_n21 coAuthorsDBLP kron_g500-logn21 soc-LiveJournal1 webbase-1M $/;"	m
+SYNCD	gpugas.h	20;"	d
+SYNC_CHECK	gpugas.h	1345;"	d
+SYNC_CHECK	gpugas.h	177;"	d
+SymmetryType	graphio.cpp	/^enum SymmetryType { stNone, stSymmetric, stSkewSymmetric, stHermitian };$/;"	g	file:
+TAR	test-graphs/common.mk	/^TAR  := tar$/;"	m
+TEST_FILES	regressions/Makefile	/^TEST_FILES = $(foreach P,$(ALGORITHMS),$(foreach G,$(GRAPHS),$G.$P.test))$/;"	m
+TOLERANCE	PowerGraphReferenceImplementations/pagerank.cpp	/^float TOLERANCE = 1.0E-2;$/;"	v
+ThrustReduceWrapper	gpugas.h	/^    struct ThrustReduceWrapper : std::binary_function<GatherResult, GatherResult, GatherResult>$/;"	s	class:GASEngineGPUShard
+USE_DELTA_CACHE	PowerGraphReferenceImplementations/pagerank.cpp	/^bool USE_DELTA_CACHE = false;$/;"	v
+VERBOSE	gpugas.h	21;"	d
+VertexData	gpugas.h	/^  typedef typename Program::VertexData   VertexData;$/;"	t	class:GASEngineGPU
+VertexData	gpugas.h	/^  typedef typename Program::VertexData   VertexData;$/;"	t	class:GASEngineGPUShard
+VertexData	refgas.h	/^  typedef typename Program::VertexData   VertexData;$/;"	t	class:GASEngineRef
+WGET	test-graphs/common.mk	/^WGET := wget$/;"	m
+active	gpugas.h	/^  Int *active; \/\/O(V)$/;"	m	class:GASEngineGPU
+active2sMapDevice	gpugas.h	/^  Int * active2sMapDevice; \/\/O(numShards)$/;"	m	class:GASEngineGPU
+activeFlags	gpugas.h	/^  char *activeFlags; \/\/O(V)$/;"	m	class:GASEngineGPU
+algos	regressions/report.py	/^algos  = set(x.split('.')[1] for x in cpuTimingFiles + gpuTimingFiles)$/;"	v
+apply	PowerGraphReferenceImplementations/bfs.cpp	/^  void apply(icontext_type& context, vertex_type& vertex,$/;"	f	class:bfs
+apply	PowerGraphReferenceImplementations/connected_component.cpp	/^  void apply(icontext_type& context, vertex_type& vertex,$/;"	f	class:cc
+apply	PowerGraphReferenceImplementations/pagerank.cpp	/^  void apply(icontext_type& context, vertex_type& vertex,$/;"	f	class:pagerank
+apply	PowerGraphReferenceImplementations/sssp.cpp	/^  void apply(icontext_type& context, vertex_type& vertex,$/;"	f	class:sssp
+apply	PowerGraphReferenceImplementations/sssp_gather.cpp	/^  void apply(icontext_type& context, vertex_type& vertex,$/;"	f	class:sssp
+apply	gpugas.h	/^    void apply()$/;"	f	class:GASEngineGPU
+apply	refgas.h	/^    void apply()$/;"	f	class:GASEngineRef
+applyRet	gpugas.h	/^  Int *applyRet; \/\/O(V) \/\/set of vertices whose neighborhood will be active next$/;"	m	class:GASEngineGPU
+base_graph_dir	gunrockCompare.py	/^base_graph_dir = '\/home\/erich\/gunrock\/dataset\/large\/'$/;"	v
+bfs	PowerGraphReferenceImplementations/bfs.cpp	/^class bfs :$/;"	c	file:
+calcGridDim	gpugas.h	/^  dim3 calcGridDim(Int n)$/;"	f	class:GASEngineGPU
+calcGridDim	gpugas.h	/^  dim3 calcGridDim(Int n)$/;"	f	class:GASEngineGPUShard
+cc	PowerGraphReferenceImplementations/connected_component.cpp	/^class cc :$/;"	c	file:
+changed	PowerGraphReferenceImplementations/bfs.cpp	/^  bool changed;$/;"	m	class:bfs	file:
+changed	PowerGraphReferenceImplementations/connected_component.cpp	/^  bool changed;$/;"	m	class:cc	file:
+changed	PowerGraphReferenceImplementations/sssp.cpp	/^  bool changed;$/;"	m	class:sssp	file:
+changed	PowerGraphReferenceImplementations/sssp_gather.cpp	/^  bool changed;$/;"	m	class:sssp	file:
+compare	regressions/checkPageRank.py	/^def compare( tol_vals, tol_allowed, test, gold ):$/;"	f
+connected_component_writer	PowerGraphReferenceImplementations/connected_component.cpp	/^struct connected_component_writer {$/;"	s	file:
+convert	test-graphs/matrix2snap.py	/^def convert( header, inputFile, outputFile, outputExt ):$/;"	f
+copyGraphIn	gpugas.h	/^    void copyGraphIn(Int nVertices$/;"	f	class:GASEngineGPUShard
+copyGraphOut	gpugas.h	/^    void copyGraphOut(EdgeData* edgeDataHost$/;"	f	class:GASEngineGPUShard
+copyToGPU	gpugas.h	/^  void copyToGPU(T* dst, const T* src, Int n)$/;"	f	class:GASEngineGPU
+copyToGPU	gpugas.h	/^  void copyToGPU(T* dst, const T* src, Int n)$/;"	f	class:GASEngineGPUShard
+copyToHost	gpugas.h	/^  void copyToHost(T* dst, const T* src, Int n)$/;"	f	class:GASEngineGPU
+copyToHost	gpugas.h	/^  void copyToHost(T* dst, const T* src, Int n)$/;"	f	class:GASEngineGPUShard
+countActive	gpugas.h	/^    Int countActive()$/;"	f	class:GASEngineGPU
+countActive	gpugas.h	/^    Int countActive()$/;"	f	class:GASEngineGPUShard
+countActive	refgas.h	/^    Int countActive()$/;"	f	class:GASEngineRef
+cpuAlloc	gpugas.h	/^  void cpuAlloc(T* &p, Int n)$/;"	f	class:GASEngineGPU
+cpuAlloc	gpugas.h	/^  void cpuAlloc(T* &p, Int n)$/;"	f	class:GASEngineGPUShard
+cpuFree	gpugas.h	/^  void cpuFree(void *ptr)$/;"	f	class:GASEngineGPU
+cpuFree	gpugas.h	/^  void cpuFree(void *ptr)$/;"	f	class:GASEngineGPUShard
+cpuTimingFiles	regressions/report.py	/^cpuTimingFiles = glob.glob('*.timing')$/;"	v
+cpuTimings	regressions/report.py	/^cpuTimings = timingsDict(algos, graphs)$/;"	v
+deviceMappedValue	gpugas.h	/^  Int *deviceMappedValue;$/;"	m	class:GASEngineGPU
+dist	PowerGraphReferenceImplementations/sssp.cpp	/^  distance_type dist;$/;"	m	struct:edge_data	file:
+dist	PowerGraphReferenceImplementations/sssp.cpp	/^  distance_type dist;$/;"	m	struct:min_distance_type	file:
+dist	PowerGraphReferenceImplementations/sssp.cpp	/^  distance_type dist;$/;"	m	struct:vertex_data	file:
+dist	PowerGraphReferenceImplementations/sssp_gather.cpp	/^  int dist;$/;"	m	struct:gather_type	file:
+distance_type	PowerGraphReferenceImplementations/bfs.cpp	/^typedef int distance_type;$/;"	t	file:
+distance_type	PowerGraphReferenceImplementations/connected_component.cpp	/^typedef int distance_type;$/;"	t	file:
+distance_type	PowerGraphReferenceImplementations/sssp.cpp	/^typedef int distance_type;$/;"	t	file:
+distance_type	PowerGraphReferenceImplementations/sssp_gather.cpp	/^typedef int distance_type;$/;"	t	file:
+divRoundUp	gpugas.h	/^  Int divRoundUp(Int x, Int y)$/;"	f	class:GASEngineGPU
+divRoundUp	gpugas.h	/^  Int divRoundUp(Int x, Int y)$/;"	f	class:GASEngineGPUShard
+dstOffsets	gpugas.h	/^  Int *dstOffsets; \/\/O(V)$/;"	m	class:GASEngineGPU
+dsts	gpugas.h	/^  Int *dsts; \/\/O(E)$/;"	m	class:GASEngineGPU
+edgeData	gpugas.h	/^  EdgeData   *edgeData; \/\/on CPU O(E)$/;"	m	class:GASEngineGPU
+edgeDataExist	gpugas.h	/^  bool       edgeDataExist;$/;"	m	class:GASEngineGPU
+edgeDataHost	gpugas.h	/^  EdgeData   *edgeDataHost;$/;"	m	class:GASEngineGPU
+edgeIndexCSC	gpugas.h	/^  Int *edgeIndexCSC; \/\/O(E)$/;"	m	class:GASEngineGPU
+edgeIndexCSR	gpugas.h	/^  Int *edgeIndexCSR; \/\/O(E)$/;"	m	class:GASEngineGPU
+edgeOffsetTmp	gpugas.h	/^  Int edgeOffsetTmp;$/;"	m	class:GASEngineGPU
+edgeShardMapCSC	gpugas.h	/^  Int *edgeShardMapCSC;$/;"	m	class:GASEngineGPU
+edgeShardMapCSR	gpugas.h	/^  Int *edgeShardMapCSR;$/;"	m	class:GASEngineGPU
+edge_data	PowerGraphReferenceImplementations/bfs.cpp	/^typedef graphlab::empty edge_data;$/;"	t	file:
+edge_data	PowerGraphReferenceImplementations/connected_component.cpp	/^typedef graphlab::empty edge_data;$/;"	t	file:
+edge_data	PowerGraphReferenceImplementations/sssp.cpp	/^  edge_data(distance_type dist = 1) : dist(dist) { }$/;"	f	struct:edge_data
+edge_data	PowerGraphReferenceImplementations/sssp.cpp	/^struct edge_data : graphlab::IS_POD_TYPE {$/;"	s	file:
+edge_data	PowerGraphReferenceImplementations/sssp_gather.cpp	/^typedef int edge_data;$/;"	t	file:
+edge_data_type	PowerGraphReferenceImplementations/pagerank.cpp	/^typedef graphlab::empty edge_data_type;$/;"	t	file:
+edgesPerVertexTmpScan	gpugas.h	/^  Int *edgesPerVertexTmpScan;$/;"	m	class:GASEngineGPU
+errorCheck	gpugas.h	/^  void errorCheck(cudaError_t err, const char* file, int line)$/;"	f	class:GASEngineGPU
+errorCheck	gpugas.h	/^  void errorCheck(cudaError_t err, const char* file, int line)$/;"	f	class:GASEngineGPUShard
+f	gunrockCompare.py	/^  f = open(full_path, 'r')$/;"	v
+fabs	regressions/checkPageRank.py	/^from math import fabs$/;"	i
+fieldIsTime	gunrockCompare.py	/^      fieldIsTime = True$/;"	v
+fieldIsTime	gunrockCompare.py	/^  fieldIsTime = False$/;"	v
+firstline	gunrockCompare.py	/^  firstline = f.readline()$/;"	v
+flag	gpugas.h	/^int flag = 0;$/;"	v
+full_path	gunrockCompare.py	/^  full_path = base_graph_dir + graph + '\/' + graph + '.mtx'$/;"	v
+gas_executable	gunrockCompare.py	/^gas_executable = '\/home\/erich\/vertexAPI2\/bfs'$/;"	v
+gas_options	gunrockCompare.py	/^gas_options = '-m'$/;"	v
+gas_output	gunrockCompare.py	/^  gas_output = subprocess.check_output([gas_executable, gas_options, full_path, '0'])$/;"	v
+gas_time	gunrockCompare.py	/^  gas_time = gas_output.split()[-2]$/;"	v
+gather	PowerGraphReferenceImplementations/connected_component.cpp	/^   gather_type gather(icontext_type& context, const vertex_type& vertex,$/;"	f	class:cc
+gather	PowerGraphReferenceImplementations/pagerank.cpp	/^  float gather(icontext_type& context, const vertex_type& vertex,$/;"	f	class:pagerank
+gather	PowerGraphReferenceImplementations/sssp_gather.cpp	/^   gather_type gather(icontext_type& context, const vertex_type& vertex,$/;"	f	class:sssp
+gather	gpugas.h	/^    void gather(bool haveGather=true)$/;"	f	class:GASEngineGPU
+gather	gpugas.h	/^    void gather(bool haveGather=true)$/;"	f	class:GASEngineGPUShard
+gather	refgas.h	/^    void gather(bool haveGather=true)$/;"	f	class:GASEngineRef
+gatherTmp	gpugas.h	/^  GatherResult *gatherTmp;     \/\/store results of gatherReduce()$/;"	m	class:GASEngineGPU
+gather_edges	PowerGraphReferenceImplementations/bfs.cpp	/^  edge_dir_type gather_edges(icontext_type& context,$/;"	f	class:bfs
+gather_edges	PowerGraphReferenceImplementations/connected_component.cpp	/^  edge_dir_type gather_edges(icontext_type& context,$/;"	f	class:cc
+gather_edges	PowerGraphReferenceImplementations/pagerank.cpp	/^  edge_dir_type gather_edges(icontext_type& context,$/;"	f	class:pagerank
+gather_edges	PowerGraphReferenceImplementations/sssp.cpp	/^  edge_dir_type gather_edges(icontext_type& context,$/;"	f	class:sssp
+gather_edges	PowerGraphReferenceImplementations/sssp_gather.cpp	/^  edge_dir_type gather_edges(icontext_type& context,$/;"	f	class:sssp
+gather_type	PowerGraphReferenceImplementations/connected_component.cpp	/^  gather_type(int label = INT_MAX) : label(label) {}$/;"	f	struct:gather_type
+gather_type	PowerGraphReferenceImplementations/connected_component.cpp	/^struct gather_type : graphlab::IS_POD_TYPE {$/;"	s	file:
+gather_type	PowerGraphReferenceImplementations/sssp_gather.cpp	/^  gather_type(int dist = 10000000) : dist(dist) {}$/;"	f	struct:gather_type
+gather_type	PowerGraphReferenceImplementations/sssp_gather.cpp	/^struct gather_type : graphlab::IS_POD_TYPE {$/;"	s	file:
+gd	regressions/checkPageRank.py	/^  gd = load( open(gold) )$/;"	v
+getResults	gpugas.h	/^    void getResults()$/;"	f	class:GASEngineGPU
+getResults	refgas.h	/^    void getResults()$/;"	f	class:GASEngineRef
+get_other_vertex	PowerGraphReferenceImplementations/sssp.cpp	/^get_other_vertex(const graph_type::edge_type& edge,$/;"	f
+glob	regressions/report.py	/^import glob$/;"	i
+gold	regressions/checkPageRank.py	/^  gold = sys.argv[2]$/;"	v
+gpuAlloc	gpugas.h	/^  void gpuAlloc(T* &p, Int n)$/;"	f	class:GASEngineGPU
+gpuAlloc	gpugas.h	/^  void gpuAlloc(T* &p, Int n)$/;"	f	class:GASEngineGPUShard
+gpuFree	gpugas.h	/^  void gpuFree(void *ptr)$/;"	f	class:GASEngineGPU
+gpuFree	gpugas.h	/^  void gpuFree(void *ptr)$/;"	f	class:GASEngineGPUShard
+gpuTimingFiles	regressions/report.py	/^gpuTimingFiles = glob.glob('*.timing_gpu')$/;"	v
+gpuTimings	regressions/report.py	/^gpuTimings = timingsDict(algos, graphs)$/;"	v
+graph_type	PowerGraphReferenceImplementations/bfs.cpp	/^typedef graphlab::distributed_graph<vertex_data, edge_data> graph_type;$/;"	t	file:
+graph_type	PowerGraphReferenceImplementations/connected_component.cpp	/^typedef graphlab::distributed_graph<vertex_data, edge_data> graph_type;$/;"	t	file:
+graph_type	PowerGraphReferenceImplementations/pagerank.cpp	/^typedef graphlab::distributed_graph<vertex_data_type, edge_data_type> graph_type;$/;"	t	file:
+graph_type	PowerGraphReferenceImplementations/sssp.cpp	/^typedef graphlab::distributed_graph<vertex_data, edge_data> graph_type;$/;"	t	file:
+graph_type	PowerGraphReferenceImplementations/sssp_gather.cpp	/^typedef graphlab::distributed_graph<vertex_data, edge_data> graph_type;$/;"	t	file:
+graphs	gunrockCompare.py	/^graphs = ['delaunay_n13', 'delaunay_n21', 'ak2010', 'coAuthorsDBLP', 'belgium_osm', 'webbase-1M', 'soc-LiveJournal1', 'kron_g500-logn21']$/;"	v
+graphs	regressions/report.py	/^graphs = set(x.split('.')[0] for x in cpuTimingFiles + gpuTimingFiles)$/;"	v
+gunrock_executable	gunrockCompare.py	/^gunrock_executable = '\/home\/erich\/gunrock\/tests\/bfs\/bin\/test_bfs_5.5_x86_64'$/;"	v
+gunrock_output	gunrockCompare.py	/^  gunrock_output = subprocess.check_output([gunrock_executable, 'market', full_path, '--device=1', '--quick', '--src=' + vertex, '--undirected=' + undirected])$/;"	v
+gunrock_time	gunrockCompare.py	/^      gunrock_time = field$/;"	v
+gunrock_time	gunrockCompare.py	/^  gunrock_time = ''$/;"	v
+header	test-graphs/matrix2snap.py	/^  header = parseHeader( input.readline() )$/;"	v
+hostMappedValue	gpugas.h	/^  Int *hostMappedValue;$/;"	m	class:GASEngineGPU
+init	PowerGraphReferenceImplementations/sssp.cpp	/^  void init(icontext_type& context, const vertex_type& vertex,$/;"	f	class:sssp
+init_vertex	PowerGraphReferenceImplementations/bfs.cpp	/^void init_vertex(graph_type::vertex_type& vertex)$/;"	f
+init_vertex	PowerGraphReferenceImplementations/connected_component.cpp	/^void init_vertex(graph_type::vertex_type& vertex)$/;"	f
+init_vertex	PowerGraphReferenceImplementations/pagerank.cpp	/^void init_vertex(graph_type::vertex_type& vertex) { vertex.data() = RESET_PROB; }$/;"	f
+init_vertex	PowerGraphReferenceImplementations/sssp_gather.cpp	/^void init_vertex(graph_type::vertex_type& vertex)$/;"	f
+input	test-graphs/matrix2snap.py	/^  input = open( inputName )$/;"	v
+isBlankLine	graphio.cpp	/^static bool isBlankLine( const char* line )$/;"	f	file:
+itertools	regressions/report.py	/^import itertools$/;"	i
+label	PowerGraphReferenceImplementations/connected_component.cpp	/^  int label;$/;"	m	struct:gather_type	file:
+last_change	PowerGraphReferenceImplementations/pagerank.cpp	/^  float last_change;$/;"	m	class:pagerank	file:
+load	PowerGraphReferenceImplementations/bfs.cpp	/^  void load(graphlab::iarchive& iarc) {$/;"	f	class:bfs
+load	PowerGraphReferenceImplementations/connected_component.cpp	/^  void load(graphlab::iarchive& iarc) {$/;"	f	class:cc
+load	PowerGraphReferenceImplementations/pagerank.cpp	/^  void load(graphlab::iarchive& iarc) {$/;"	f	class:pagerank
+load	PowerGraphReferenceImplementations/sssp_gather.cpp	/^  void load(graphlab::iarchive& iarc) {$/;"	f	class:sssp
+load	regressions/checkPageRank.py	/^def load( f ):$/;"	f
+loadGraph	graphio.cpp	/^int loadGraph( const char* fname$/;"	f
+loadGraph_GraphLabSnap	graphio.cpp	/^int loadGraph_GraphLabSnap( const char* fname$/;"	f
+loadGraph_MatrixMarket	graphio.cpp	/^int loadGraph_MatrixMarket( const char* fname$/;"	f
+loadGraph_binaryCSR	graphio.cpp	/^int loadGraph_binaryCSR(const char* fname$/;"	f
+loadGraph_common	graphio.cpp	/^static int loadGraph_common( gzFile f$/;"	f	file:
+m_active	gpugas.h	/^      Int *m_active;$/;"	m	struct:GASEngineGPUShard::ActivateGatherIterator
+m_active	gpugas.h	/^      Int *m_active;$/;"	m	struct:GASEngineGPUShard::EdgeCountIterator
+m_active	gpugas.h	/^      Int *m_active;$/;"	m	struct:GASEngineGPUShard::PredicatedEdgeCountIterator
+m_active	gpugas.h	/^  Int *m_active;$/;"	m	class:GASEngineGPUShard
+m_active	refgas.h	/^  std::vector<Int>  m_active;$/;"	m	class:GASEngineRef
+m_activeFlags	gpugas.h	/^  char *m_activeFlags;$/;"	m	class:GASEngineGPUShard
+m_activeFlags	refgas.h	/^  std::vector<bool> m_activeFlags;$/;"	m	class:GASEngineRef
+m_activeNext	gpugas.h	/^  Int *m_activeNext;$/;"	m	class:GASEngineGPUShard
+m_applyRet	gpugas.h	/^  Int *m_applyRet; \/\/set of vertices whose neighborhood will be active next$/;"	m	class:GASEngineGPUShard
+m_applyRet	refgas.h	/^  std::vector<Int>  m_applyRet;$/;"	m	class:GASEngineRef
+m_count	gpugas.h	/^      int* m_count;$/;"	m	struct:GASEngineGPUShard::ActivateOutputIteratorSmallSize
+m_deviceMappedValue	gpugas.h	/^  Int *m_deviceMappedValue;$/;"	m	class:GASEngineGPUShard
+m_dst	primitives/scatter_if_mgpu.h	/^  int*  m_dst;$/;"	m	struct:scatterIterator
+m_dstOffsets	gpugas.h	/^  Int *m_dstOffsets;$/;"	m	class:GASEngineGPUShard
+m_dstOffsets	refgas.h	/^  std::vector<Int> m_dstOffsets;$/;"	m	class:GASEngineRef
+m_dsts	gpugas.h	/^  Int *m_dsts; \/\/Not required since I will be creating the CSR representation in the parent class$/;"	m	class:GASEngineGPUShard
+m_dsts	refgas.h	/^  std::vector<Int> m_dsts;$/;"	m	class:GASEngineRef
+m_edgeCountScan	gpugas.h	/^  Int *m_edgeCountScan;$/;"	m	class:GASEngineGPUShard
+m_edgeData	gpugas.h	/^  EdgeData   *m_edgeData;$/;"	m	class:GASEngineGPUShard
+m_edgeData	refgas.h	/^  EdgeData   *m_edgeData;$/;"	m	class:GASEngineRef
+m_edgeDataHost	gpugas.h	/^  bool m_edgeDataHost;$/;"	m	class:GASEngineGPUShard
+m_edgeIndexCSC	gpugas.h	/^  Int *m_edgeIndexCSC;$/;"	m	class:GASEngineGPUShard
+m_edgeIndexCSC	refgas.h	/^  std::vector<Int> m_edgeIndexCSC;$/;"	m	class:GASEngineRef
+m_edgeIndexCSR	gpugas.h	/^  Int *m_edgeIndexCSR;$/;"	m	class:GASEngineGPUShard
+m_edgeIndexCSR	refgas.h	/^  std::vector<Int> m_edgeIndexCSR;$/;"	m	class:GASEngineRef
+m_ev0	gpugas.h	/^  cudaEvent_t m_ev0, m_ev1;$/;"	m	class:GASEngineGPUShard
+m_ev1	gpugas.h	/^  cudaEvent_t m_ev0, m_ev1;$/;"	m	class:GASEngineGPUShard
+m_flags	gpugas.h	/^      char* m_flags;$/;"	m	struct:GASEngineGPUShard::ActivateOutputIterator
+m_gatherDstsTmp	gpugas.h	/^  Int          *m_gatherDstsTmp; \/\/keys for reduce_by_key in gatherReduce$/;"	m	class:GASEngineGPUShard
+m_gatherMapTmp	gpugas.h	/^  GatherResult *m_gatherMapTmp;  \/\/store results of gatherMap()$/;"	m	class:GASEngineGPUShard
+m_gatherResults	refgas.h	/^  std::vector<GatherResult> m_gatherResults;$/;"	m	class:GASEngineRef
+m_gatherTmp	gpugas.h	/^  GatherResult *m_gatherTmp;     \/\/store results of gatherReduce()$/;"	m	class:GASEngineGPUShard
+m_hostMappedValue	gpugas.h	/^  Int *m_hostMappedValue;$/;"	m	class:GASEngineGPUShard
+m_index	primitives/scatter_if_mgpu.h	/^  int   m_index;$/;"	m	struct:scatterIterator
+m_inputlist	gpugas.h	/^      int* m_inputlist;$/;"	m	struct:GASEngineGPUShard::ListOutputIterator
+m_list	gpugas.h	/^      Int* m_list;$/;"	m	struct:GASEngineGPUShard::ActivateOutputIteratorSmallSize
+m_list	gpugas.h	/^      int *m_list;$/;"	m	struct:GASEngineGPUShard::ListToHeadFlagsIterator
+m_mgpuContext	gpugas.h	/^  mgpu::ContextPtr m_mgpuContext;$/;"	m	class:GASEngineGPUShard
+m_nActive	gpugas.h	/^  Int  m_nActive;$/;"	m	class:GASEngineGPUShard
+m_nActiveNext	gpugas.h	/^  Int  m_nActiveNext;$/;"	m	class:GASEngineGPUShard
+m_nActiveShard	gpugas.h	/^  Int *m_nActiveShard;$/;"	m	class:GASEngineGPUShard
+m_nCSCEdges	gpugas.h	/^  Int         m_nCSCEdges;$/;"	m	class:GASEngineGPUShard
+m_nCSREdges	gpugas.h	/^  Int         m_nCSREdges;$/;"	m	class:GASEngineGPUShard
+m_nEdges	refgas.h	/^  Int         m_nEdges;$/;"	m	class:GASEngineRef
+m_nVertices	gpugas.h	/^  Int         m_nVertices;$/;"	m	class:GASEngineGPUShard
+m_nVertices	refgas.h	/^  Int         m_nVertices;$/;"	m	class:GASEngineRef
+m_offset	gpugas.h	/^      int m_offset;$/;"	m	struct:GASEngineGPUShard::ListOutputIterator
+m_offset	gpugas.h	/^      int m_offset;$/;"	m	struct:GASEngineGPUShard::ListToHeadFlagsIterator
+m_offsets	gpugas.h	/^      Int *m_offsets;$/;"	m	struct:GASEngineGPUShard::ActivateGatherIterator
+m_offsets	gpugas.h	/^      Int *m_offsets;$/;"	m	struct:GASEngineGPUShard::EdgeCountIterator
+m_offsets	gpugas.h	/^      Int *m_offsets;$/;"	m	struct:GASEngineGPUShard::PredicatedEdgeCountIterator
+m_outputlist	gpugas.h	/^      int* m_outputlist;$/;"	m	struct:GASEngineGPUShard::ListOutputIterator
+m_pred	primitives/scatter_if_mgpu.h	/^  PredType m_pred;$/;"	m	struct:scatterIterator
+m_predicates	gpugas.h	/^      Int *m_predicates;$/;"	m	struct:GASEngineGPUShard::PredicatedEdgeCountIterator
+m_srcOffsets	gpugas.h	/^  Int *m_srcOffsets;$/;"	m	class:GASEngineGPUShard
+m_srcOffsets	refgas.h	/^  std::vector<Int> m_srcOffsets;$/;"	m	class:GASEngineRef
+m_srcs	gpugas.h	/^  Int *m_srcs; \/\/Not required since I will be creating the CSC representation in the parent class$/;"	m	class:GASEngineGPUShard
+m_srcs	refgas.h	/^  std::vector<Int> m_srcs;$/;"	m	class:GASEngineRef
+m_vertexData	gpugas.h	/^  VertexData *m_vertexData;$/;"	m	class:GASEngineGPUShard
+m_vertexData	refgas.h	/^  VertexData *m_vertexData;$/;"	m	class:GASEngineRef
+m_vertexDataHost	gpugas.h	/^  bool m_vertexDataHost;$/;"	m	class:GASEngineGPUShard
+m_vertexOffset	gpugas.h	/^  Int        m_vertexOffset;$/;"	m	class:GASEngineGPUShard
+main	PowerGraphReferenceImplementations/bfs.cpp	/^int main(int argc, char** argv) {$/;"	f
+main	PowerGraphReferenceImplementations/connected_component.cpp	/^int main(int argc, char** argv) {$/;"	f
+main	PowerGraphReferenceImplementations/pagerank.cpp	/^int main(int argc, char** argv) {$/;"	f
+main	PowerGraphReferenceImplementations/sssp.cpp	/^int main(int argc, char** argv) {$/;"	f
+main	PowerGraphReferenceImplementations/sssp_gather.cpp	/^int main(int argc, char** argv) {$/;"	f
+main	createCCGraph.cpp	/^int main(int argc, char **argv) {$/;"	f
+main	gr2mtx.cpp	/^int main(int argc, char **argv)$/;"	f
+main	mtx2gr.cpp	/^int main(int argc, char **argv)$/;"	f
+maxEdgesPerShard	gpugas.h	/^  static const Int maxEdgesPerShard = 512;\/\/16777216;\/\/ 33554432;$/;"	m	class:GASEngineGPU
+maxVerticesPerShard	gpugas.h	/^  Int maxVerticesPerShard;$/;"	m	class:GASEngineGPU
+mergeCmp	regressions/checkDist.py	/^def mergeCmp(fTest, fGold):$/;"	f
+mgpuContext	gpugas.h	/^  mgpu::ContextPtr mgpuContext;$/;"	m	class:GASEngineGPU
+min_dist	PowerGraphReferenceImplementations/sssp.cpp	/^  distance_type min_dist;$/;"	m	class:sssp	file:
+min_dist	PowerGraphReferenceImplementations/sssp_gather.cpp	/^  int min_dist;$/;"	m	class:sssp	file:
+min_distance_type	PowerGraphReferenceImplementations/sssp.cpp	/^  min_distance_type(distance_type dist =$/;"	f	struct:min_distance_type
+min_distance_type	PowerGraphReferenceImplementations/sssp.cpp	/^struct min_distance_type : graphlab::IS_POD_TYPE {$/;"	s	file:
+nActive	gpugas.h	/^  Int  nActive;$/;"	m	class:GASEngineGPU
+nActiveShardMap	gpugas.h	/^  Int *nActiveShardMap;$/;"	m	class:GASEngineGPU
+nEdges	gpugas.h	/^  Int         nEdges;$/;"	m	class:GASEngineGPU
+nVertices	gpugas.h	/^  Int         nVertices;$/;"	m	class:GASEngineGPU
+nextIter	gpugas.h	/^    Int nextIter()$/;"	f	class:GASEngineGPU
+nextIter	refgas.h	/^    Int nextIter()$/;"	f	class:GASEngineRef
+numShards	gpugas.h	/^  Int numShards;$/;"	m	class:GASEngineGPU
+openFile	graphio.cpp	/^static gzFile openFile( const char* fname )$/;"	f	file:
+operator ()	gpugas.h	/^      __device__ GatherResult operator()(const GatherResult &left, const GatherResult &right)$/;"	f	struct:GASEngineGPUShard::ThrustReduceWrapper
+operator +	gpugas.h	/^      ActivateGatherIterator operator +(Int i) const$/;"	f	struct:GASEngineGPUShard::ActivateGatherIterator
+operator +	gpugas.h	/^      ActivateOutputIterator operator +(Int i)$/;"	f	struct:GASEngineGPUShard::ActivateOutputIterator
+operator +	gpugas.h	/^      ActivateOutputIteratorSmallSize operator +(Int i)$/;"	f	struct:GASEngineGPUShard::ActivateOutputIteratorSmallSize
+operator +	gpugas.h	/^      EdgeCountIterator operator +(Int i) const$/;"	f	struct:GASEngineGPUShard::EdgeCountIterator
+operator +	gpugas.h	/^      ListOutputIterator operator +(Int i) const$/;"	f	struct:GASEngineGPUShard::ListOutputIterator
+operator +	gpugas.h	/^      ListToHeadFlagsIterator operator+(int i) const$/;"	f	struct:GASEngineGPUShard::ListToHeadFlagsIterator
+operator +	gpugas.h	/^      PredicatedEdgeCountIterator operator +(Int i) const$/;"	f	struct:GASEngineGPUShard::PredicatedEdgeCountIterator
+operator +	primitives/scatter_if_mgpu.h	/^  scatterIterator operator +(int i) const$/;"	f	struct:scatterIterator
+operator +=	PowerGraphReferenceImplementations/connected_component.cpp	/^  gather_type& operator+=(const gather_type& other) {$/;"	f	struct:gather_type
+operator +=	PowerGraphReferenceImplementations/sssp.cpp	/^  min_distance_type& operator+=(const min_distance_type& other) {$/;"	f	struct:min_distance_type
+operator +=	PowerGraphReferenceImplementations/sssp_gather.cpp	/^  gather_type& operator+=(const gather_type& other) {$/;"	f	struct:gather_type
+operator =	gpugas.h	/^      void operator =(Int dst)$/;"	f	struct:GASEngineGPUShard::ActivateOutputIterator
+operator =	gpugas.h	/^      void operator =(Int dst)$/;"	f	struct:GASEngineGPUShard::ActivateOutputIteratorSmallSize
+operator =	gpugas.h	/^      void operator =(Int dst)$/;"	f	struct:GASEngineGPUShard::ListOutputIterator
+operator =	primitives/scatter_if_mgpu.h	/^  void operator =(int dst)$/;"	f	struct:scatterIterator
+operator []	gpugas.h	/^      ActivateOutputIterator& operator[](Int i)$/;"	f	struct:GASEngineGPUShard::ActivateOutputIterator
+operator []	gpugas.h	/^      ActivateOutputIteratorSmallSize& operator[](Int i)$/;"	f	struct:GASEngineGPUShard::ActivateOutputIteratorSmallSize
+operator []	gpugas.h	/^      Int operator [](Int i)$/;"	f	struct:GASEngineGPUShard::ActivateGatherIterator
+operator []	gpugas.h	/^      Int operator[](Int i) const$/;"	f	struct:GASEngineGPUShard::EdgeCountIterator
+operator []	gpugas.h	/^      Int operator[](Int i) const$/;"	f	struct:GASEngineGPUShard::PredicatedEdgeCountIterator
+operator []	gpugas.h	/^      ListOutputIterator operator[](Int i) const$/;"	f	struct:GASEngineGPUShard::ListOutputIterator
+operator []	gpugas.h	/^      int operator[](int i) {$/;"	f	struct:GASEngineGPUShard::ListToHeadFlagsIterator
+operator []	primitives/scatter_if_mgpu.h	/^  scatterIterator operator[](int i) const$/;"	f	struct:scatterIterator
+output	test-graphs/matrix2snap.py	/^  output = open( outputName, 'w' )$/;"	v
+outputExt	test-graphs/matrix2snap.py	/^  outputExt = outputName.split('.')[-1]$/;"	v
+pagerank	PowerGraphReferenceImplementations/pagerank.cpp	/^class pagerank :$/;"	c	file:
+pagerank_writer	PowerGraphReferenceImplementations/pagerank.cpp	/^struct pagerank_writer {$/;"	s	file:
+parseHeader	test-graphs/matrix2snap.py	/^def parseHeader( line ):$/;"	f
+preComputed	gpugas.h	/^  bool *preComputed;$/;"	m	class:GASEngineGPU
+preComputed	gpugas.h	/^  bool preComputed;$/;"	m	class:GASEngineGPUShard
+preComputedShard	gpugas.h	/^  bool *preComputedShard;$/;"	m	class:GASEngineGPUShard
+preprocessData	gpugas.h	/^  std::auto_ptr<mgpu::ReduceByKeyPreprocessData> preprocessData;$/;"	m	class:GASEngineGPUShard
+print	gpugas.h	17;"	d
+printDevice	gpugas.h	/^  void printDevice(Int *src, Int n)$/;"	f	class:GASEngineGPU
+printDevice	gpugas.h	/^  void printDevice(Int *src, Int n)$/;"	f	class:GASEngineGPUShard
+printDeviceChar	gpugas.h	/^  void printDeviceChar(char *src, Int n)$/;"	f	class:GASEngineGPU
+printDeviceChar	gpugas.h	/^  void printDeviceChar(char *src, Int n)$/;"	f	class:GASEngineGPUShard
+printDeviceFloat	gpugas.h	/^  void printDeviceFloat(float *src, Int n)$/;"	f	class:GASEngineGPU
+printDeviceFloat	gpugas.h	/^  void printDeviceFloat(float *src, Int n)$/;"	f	class:GASEngineGPUShard
+printGPUArray	gpugas.h	/^  void printGPUArray(T* ptr, int n)$/;"	f	class:GASEngineGPUShard
+printSummary	regressions/report.py	/^def printSummary(algos, graphs, cpuTimings, gpuTimings):$/;"	f
+printVertexData	gpugas.h	/^  void printVertexData(VertexData *src, Int n)$/;"	f	class:GASEngineGPU
+random	test-graphs/matrix2snap.py	/^import random$/;"	i
+readLine	regressions/checkDist.py	/^def readLine(f):$/;"	f
+readTimings	regressions/report.py	/^def readTimings(algo, graph, ext):$/;"	f
+run	gpugas.h	/^    void run()$/;"	f	class:GASEngineGPU
+run	refgas.h	/^    void run()$/;"	f	class:GASEngineRef
+runTest	gpugas.h	/^    void runTest()$/;"	f	class:GASEngineGPU
+s2vMapDevice	gpugas.h	/^  Int * s2vMapDevice; \/\/O(V)$/;"	m	class:GASEngineGPU
+save	PowerGraphReferenceImplementations/bfs.cpp	/^  void save(graphlab::oarchive& oarc) const {$/;"	f	class:bfs
+save	PowerGraphReferenceImplementations/connected_component.cpp	/^  void save(graphlab::oarchive& oarc) const {$/;"	f	class:cc
+save	PowerGraphReferenceImplementations/pagerank.cpp	/^  void save(graphlab::oarchive& oarc) const {$/;"	f	class:pagerank
+save	PowerGraphReferenceImplementations/sssp_gather.cpp	/^  void save(graphlab::oarchive& oarc) const {$/;"	f	class:sssp
+save_edge	PowerGraphReferenceImplementations/bfs.cpp	/^  std::string save_edge(graph_type::edge_type e) { return ""; }$/;"	f	struct:shortest_path_writer
+save_edge	PowerGraphReferenceImplementations/connected_component.cpp	/^  std::string save_edge(graph_type::edge_type e) { return ""; }$/;"	f	struct:connected_component_writer
+save_edge	PowerGraphReferenceImplementations/pagerank.cpp	/^  std::string save_edge(graph_type::edge_type e) { return ""; }$/;"	f	struct:pagerank_writer
+save_edge	PowerGraphReferenceImplementations/sssp.cpp	/^  std::string save_edge(graph_type::edge_type e) { return ""; }$/;"	f	struct:shortest_path_writer
+save_edge	PowerGraphReferenceImplementations/sssp_gather.cpp	/^  std::string save_edge(graph_type::edge_type e) { return ""; }$/;"	f	struct:shortest_path_writer
+save_vertex	PowerGraphReferenceImplementations/bfs.cpp	/^  std::string save_vertex(const graph_type::vertex_type& vtx) {$/;"	f	struct:shortest_path_writer
+save_vertex	PowerGraphReferenceImplementations/connected_component.cpp	/^  std::string save_vertex(const graph_type::vertex_type& vtx) {$/;"	f	struct:connected_component_writer
+save_vertex	PowerGraphReferenceImplementations/pagerank.cpp	/^  std::string save_vertex(graph_type::vertex_type v) {$/;"	f	struct:pagerank_writer
+save_vertex	PowerGraphReferenceImplementations/sssp.cpp	/^  std::string save_vertex(const graph_type::vertex_type& vtx) {$/;"	f	struct:shortest_path_writer
+save_vertex	PowerGraphReferenceImplementations/sssp_gather.cpp	/^  std::string save_vertex(const graph_type::vertex_type& vtx) {$/;"	f	struct:shortest_path_writer
+scatter	PowerGraphReferenceImplementations/bfs.cpp	/^  void scatter(icontext_type& context, const vertex_type& vertex,$/;"	f	class:bfs
+scatter	PowerGraphReferenceImplementations/connected_component.cpp	/^  void scatter(icontext_type& context, const vertex_type& vertex,$/;"	f	class:cc
+scatter	PowerGraphReferenceImplementations/pagerank.cpp	/^  void scatter(icontext_type& context, const vertex_type& vertex,$/;"	f	class:pagerank
+scatter	PowerGraphReferenceImplementations/sssp.cpp	/^  void scatter(icontext_type& context, const vertex_type& vertex,$/;"	f	class:sssp
+scatter	PowerGraphReferenceImplementations/sssp_gather.cpp	/^  void scatter(icontext_type& context, const vertex_type& vertex,$/;"	f	class:sssp
+scatterActivate	gpugas.h	/^    void scatterActivate(Int activeOffset, Int gnVertices, bool haveScatter=true)$/;"	f	class:GASEngineGPUShard
+scatterActivate	gpugas.h	/^    void scatterActivate(bool haveScatter=true)$/;"	f	class:GASEngineGPU
+scatterActivate	refgas.h	/^    void scatterActivate(bool haveScatter=true)$/;"	f	class:GASEngineRef
+scatterIterator	primitives/scatter_if_mgpu.h	/^  scatterIterator(PredType pred, int *dst) : m_pred(pred), m_dst(dst), m_index(0) {}$/;"	f	struct:scatterIterator
+scatterIterator	primitives/scatter_if_mgpu.h	/^  scatterIterator(PredType pred, int *dst, int index) : m_pred(pred), m_dst(dst), m_index(index) {}$/;"	f	struct:scatterIterator
+scatterIterator	primitives/scatter_if_mgpu.h	/^struct scatterIterator : public std::iterator<std::input_iterator_tag, scatterIterator<PredType> > {$/;"	s
+scatterKernel	primitives/scatter_if_mgpu.h	/^void scatterKernel(InputIt in,$/;"	f
+scatter_edges	PowerGraphReferenceImplementations/bfs.cpp	/^  edge_dir_type scatter_edges(icontext_type& context,$/;"	f	class:bfs
+scatter_edges	PowerGraphReferenceImplementations/connected_component.cpp	/^  edge_dir_type scatter_edges(icontext_type& context,$/;"	f	class:cc
+scatter_edges	PowerGraphReferenceImplementations/pagerank.cpp	/^  edge_dir_type scatter_edges(icontext_type& context,$/;"	f	class:pagerank
+scatter_edges	PowerGraphReferenceImplementations/sssp.cpp	/^  edge_dir_type scatter_edges(icontext_type& context,$/;"	f	class:sssp
+scatter_edges	PowerGraphReferenceImplementations/sssp_gather.cpp	/^  edge_dir_type scatter_edges(icontext_type& context,$/;"	f	class:sssp
+scatter_if_general_twophase	primitives/scatter_if_mgpu.h	/^int scatter_if_general_twophase(InputIt     input_begin,$/;"	f
+scatter_if_inputloc_onephase	primitives/scatter_if_mgpu.h	/^int scatter_if_inputloc_onephase(int num,$/;"	f
+scatter_if_inputloc_twophase	primitives/scatter_if_mgpu.h	/^void scatter_if_inputloc_twophase(int num,$/;"	f
+setActive	gpugas.h	/^    void setActive(Int vertexStart, Int vertexEnd)$/;"	f	class:GASEngineGPU
+setActive	refgas.h	/^    void setActive(Int vertexStart, Int vertexEnd)$/;"	f	class:GASEngineRef
+setGraph	gpugas.h	/^    void setGraph(Int nVertices$/;"	f	class:GASEngineGPUShard
+setGraph	gpugas.h	/^  void setGraph(Int u_nVertices \/\/number of vertices$/;"	f	class:GASEngineGPU
+setGraph	refgas.h	/^    void setGraph(Int nVertices$/;"	f	class:GASEngineRef
+shard	gpugas.h	/^  GASEngineGPUShard<Program, Int, sortEdgesForGather> *shard[NUM_STREAMS];$/;"	m	class:GASEngineGPU
+shardMapTmp	gpugas.h	/^  Int *shardMapTmp;$/;"	m	class:GASEngineGPU
+shortest_path_writer	PowerGraphReferenceImplementations/bfs.cpp	/^struct shortest_path_writer {$/;"	s	file:
+shortest_path_writer	PowerGraphReferenceImplementations/sssp.cpp	/^struct shortest_path_writer {$/;"	s	file:
+shortest_path_writer	PowerGraphReferenceImplementations/sssp_gather.cpp	/^struct shortest_path_writer {$/;"	s	file:
+srcOffsets	gpugas.h	/^  Int *srcOffsets; \/\/O(V)$/;"	m	class:GASEngineGPU
+srcs	gpugas.h	/^  Int *srcs; \/\/O(E)$/;"	m	class:GASEngineGPU
+sssp	PowerGraphReferenceImplementations/sssp.cpp	/^class sssp :$/;"	c	file:
+sssp	PowerGraphReferenceImplementations/sssp_gather.cpp	/^class sssp :$/;"	c	file:
+stHermitian	graphio.cpp	/^enum SymmetryType { stNone, stSymmetric, stSkewSymmetric, stHermitian };$/;"	e	enum:SymmetryType	file:
+stNone	graphio.cpp	/^enum SymmetryType { stNone, stSymmetric, stSkewSymmetric, stHermitian };$/;"	e	enum:SymmetryType	file:
+stSkewSymmetric	graphio.cpp	/^enum SymmetryType { stNone, stSymmetric, stSkewSymmetric, stHermitian };$/;"	e	enum:SymmetryType	file:
+stSymmetric	graphio.cpp	/^enum SymmetryType { stNone, stSymmetric, stSkewSymmetric, stHermitian };$/;"	e	enum:SymmetryType	file:
+startVertex	PowerGraphReferenceImplementations/bfs.cpp	/^int startVertex;$/;"	v
+startVertex	PowerGraphReferenceImplementations/connected_component.cpp	/^int startVertex;$/;"	v
+startVertex	PowerGraphReferenceImplementations/sssp_gather.cpp	/^int startVertex;$/;"	v
+subprocess	gunrockCompare.py	/^import subprocess$/;"	i
+syncAndErrorCheck	gpugas.h	/^  void syncAndErrorCheck(const char* file, int line)$/;"	f	class:GASEngineGPU
+syncAndErrorCheck	gpugas.h	/^  void syncAndErrorCheck(const char* file, int line)$/;"	f	class:GASEngineGPUShard
+sys	regressions/checkDist.py	/^import sys$/;"	i
+sys	regressions/checkPageRank.py	/^import sys$/;"	i
+sys	test-graphs/matrix2snap.py	/^import sys$/;"	i
+td	regressions/checkPageRank.py	/^  td = load( open(test) )$/;"	v
+test	regressions/checkPageRank.py	/^  test = sys.argv[1]$/;"	v
+timingsDict	regressions/report.py	/^def timingsDict(algos, graphs):$/;"	f
+undirected	gunrockCompare.py	/^    undirected = '0'$/;"	v
+undirected	gunrockCompare.py	/^    undirected = '1'$/;"	v
+v2sMapDevice	gpugas.h	/^  Int * v2sMapDevice; \/\/O(V)$/;"	m	class:GASEngineGPU
+vertex	gunrockCompare.py	/^  vertex = gas_output.split()[2]$/;"	v
+vertexData	gpugas.h	/^  VertexData *vertexData; \/\/on GPU O(V)$/;"	m	class:GASEngineGPU
+vertexDataExist	gpugas.h	/^  bool       vertexDataExist;$/;"	m	class:GASEngineGPU
+vertexDataHost	gpugas.h	/^  VertexData *vertexDataHost;$/;"	m	class:GASEngineGPU
+vertexShardMap	gpugas.h	/^  Int *vertexShardMap;$/;"	m	class:GASEngineGPU
+vertex_data	PowerGraphReferenceImplementations/bfs.cpp	/^typedef int vertex_data;$/;"	t	file:
+vertex_data	PowerGraphReferenceImplementations/connected_component.cpp	/^typedef int vertex_data;$/;"	t	file:
+vertex_data	PowerGraphReferenceImplementations/sssp.cpp	/^  vertex_data(distance_type dist = 10000000 \/*std::numeric_limits<distance_type>::max()*\/) :$/;"	f	struct:vertex_data
+vertex_data	PowerGraphReferenceImplementations/sssp.cpp	/^struct vertex_data : graphlab::IS_POD_TYPE {$/;"	s	file:
+vertex_data	PowerGraphReferenceImplementations/sssp_gather.cpp	/^typedef int vertex_data;$/;"	t	file:
+vertex_data_type	PowerGraphReferenceImplementations/pagerank.cpp	/^typedef float vertex_data_type;$/;"	t	file:
+writeGraph_binaryCSR	graphio.cpp	/^int writeGraph_binaryCSR(const char* fname$/;"	f
+writeGraph_mtx	graphio.cpp	/^int writeGraph_mtx(const char* fname, int nVertices, int nEdges$/;"	f
+~GASEngineRef	refgas.h	/^    ~GASEngineRef(){}$/;"	f	class:GASEngineRef
